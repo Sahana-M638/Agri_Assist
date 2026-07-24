@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>   
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Farms - AgriAssist AI</title>
@@ -117,7 +117,7 @@ margin-top:10px;
 </style>
 </head>
 
-<body ng-app="agriApp" ng-controller="FarmController">
+<body ng-app="agriApp" ng-controller="FarmController">        
 
 <div class="sidebar">
 
@@ -146,20 +146,8 @@ margin-top:10px;
 <div class="farm-card" style="margin-bottom:25px;background:#e8f5e9;">
 
 <h3>🌱 Today's Farming Tip</h3>
-<div class="farm-card" style="margin-bottom:25px;">
-
-<h3>🚜 Farm Information</h3>
-
-<label>Farm Name</label><br>
-<input type="text"
-       ng-model="farmName"
-       style="width:100%;padding:10px;margin:10px 0;border:1px solid #ccc;border-radius:5px;">
-
-<p><strong>Farm Name:</strong> <span ng-bind="farmName"></span></p>
-
-</div>
-<p>{{tips}}</p>
-
+<p><strong>Date:</strong> {{today | date:'dd/MM/yyyy'}}</p>
+<p>{{tips}}</p>              
 </div>
 <div class="farm-container">
 
@@ -194,7 +182,7 @@ margin-top:10px;
 
 var app = angular.module("agriApp", []);
 
-/* Value Dependency 1 */
+/* Value Dependency  */
 app.value("tips",[
     "Water crops early in the morning.",
     "Use organic fertilizers regularly.",
@@ -204,7 +192,7 @@ app.value("tips",[
 ]);
 
 
-/* Service Dependency 1 */
+/* Service Dependency */
 app.service("TipService", function(tips){
 
     this.getRandomTip = function(){
@@ -224,8 +212,8 @@ function($scope, TipService){
 
     // Farming Tip
     $scope.tips = TipService.getRandomTip();
+    $scope.today = new Date();
 
-$scope.farmName = "Green Valley Farm";    
 });
 
 </script>
