@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Dashboard</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+display:flex;
+background:#f4fff4;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:250px;
+height:100vh;
+background:#2e7d32;
+padding-top:20px;
+position:fixed;
+}
+
+.sidebar h2{
+color:white;
+text-align:center;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:15px 25px;
+color:white;
+text-decoration:none;
+font-size:16px;
+}
+
+.sidebar a:hover{
+background:#1b5e20;
+}
+
+/* Main Content */
+
+.main{
+margin-left:250px;
+padding:30px;
+width:100%;
+}
+
+.main h1{
+color:#2e7d32;
+margin-bottom:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card h3{
+color:#2e7d32;
+margin-bottom:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>🌱 AgriAssist AI</h2>
+
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="profile.html">👤 My Profile</a>
+<a href="farms.html">🚜 My Farms</a>
+<a href="addfarm.html">➕ Add Farm</a>
+<a href="fertilizer.html">🌱 Fertilizer Calculator</a>
+<a href="disease.html">🌿 Disease Detection</a>
+<a href="pest.html">🐛 Pest Detection</a>
+<a href="weather.html">☁ Weather Advice</a>
+<a href="assistant.html">🤖 AI Assistant</a>
+<a href="login.html">🚪 Logout</a>
+
+</div>
+
+<div class="main">
+
+<h1>Welcome Farmer 👋</h1>
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Farms</h3>
+<p>3 Registered Farms</p>
+</div>
+
+<div class="card">
+<h3>Disease Reports</h3>
+<p>2 Pending Analyses</p>
+</div>
+
+<div class="card">
+<h3>Weather</h3>
+<p>Sunny • 30°C</p>
+</div>
+
+<div class="card">
+<h3>AI Assistant</h3>
+<p>Ready to Answer Questions</p>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
