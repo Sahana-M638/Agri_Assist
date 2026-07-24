@@ -174,7 +174,7 @@ background:#1b5e20;
 <p><strong>Location:</strong> {{location}}</p>
 
 <!-- Currency Filter -->
-<p><strong>Membership Fee:</strong> {{membershipFee | currency:"₹"}}</p>
+<p><strong>Membership Fee:</strong> {{membershipfee | currency:"₹"}}</p>
 
 <p><strong>Profile Status:</strong> {{status}}</p>
 </div>
@@ -201,6 +201,11 @@ background:#1b5e20;
 <input type="text" ng-model="location">
 </div>
 
+<div class="form-group">
+<label>Membership fee</label>
+<input type="text" ng-model="membershipfee" ng-change="updateStatus()">
+</div>
+
 <button type="submit">Update Profile</button>
 
 </form>
@@ -219,9 +224,9 @@ app.value("appName", "AgriAssist AI");
 /* SERVICE */
 app.service("profileService", function(){
 
-this.getProfileCompletion = function(name, email, mobile, location){
+this.getProfileCompletion = function(name, email, mobile, location,membershipfee){
 
-if(name && email && mobile && location)
+if(name && email && mobile && location && membershipfee)
 return "100% Complete";
 
 else
@@ -239,7 +244,7 @@ $scope.name = "Sahoo";
 $scope.email = "sahoo@gmail.com";
 $scope.mobile = "9876543210";
 $scope.location = "Madurai";
-$scope.salary = 25000;
+$scope.membershipfee = 25000;
 
 // Function to update profile status
 $scope.updateStatus = function(){
@@ -248,7 +253,8 @@ $scope.status = profileService.getProfileCompletion(
 $scope.name,
 $scope.email,
 $scope.mobile,
-$scope.location
+$scope.location,
+$scope.membershipfee
 );
 
 };
