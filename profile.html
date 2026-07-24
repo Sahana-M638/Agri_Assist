@@ -163,14 +163,20 @@ background:#1b5e20;
 
 <h3>{{appName}}</h3>
 
-<h2 ng-bind="name"></h2>
+<!-- Uppercase Filter -->
+<h2>{{name | uppercase}}</h2>
+
+<!-- Lowercase Filter -->
+<p><strong>Username:</strong> {{name | lowercase}}</p>
 
 <p><strong>Email:</strong> {{email}}</p>
 
 <p><strong>Location:</strong> {{location}}</p>
 
-<p><strong>Profile Status:</strong> {{status}}</p>
+<!-- Currency Filter -->
+<p><strong>Membership Fee:</strong> {{membershipFee | currency:"₹"}}</p>
 
+<p><strong>Profile Status:</strong> {{status}}</p>
 </div>
 
 <form id="profileForm">
@@ -233,6 +239,7 @@ $scope.name = "Sahoo";
 $scope.email = "sahoo@gmail.com";
 $scope.mobile = "9876543210";
 $scope.location = "Madurai";
+$scope.salary = 25000;
 
 // Function to update profile status
 $scope.updateStatus = function(){
