@@ -1,222 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="agriApp">
+
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>   
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Farms - AgriAssist AI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AgriAssist AI</title>
 
-<style>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
 
-body{
-display:flex;
-background:#f4fff4;
-}
+        body {
+            display: flex;
+            background: #f4fff4;
+        }
 
-/* Sidebar */
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #2e7d32;
+            position: fixed;
+            color: white;
+        }
 
-.sidebar{
-width:250px;
-height:100vh;
-background:#2e7d32;
-position:fixed;
-padding-top:20px;
-}
+        .sidebar h2 {
+            text-align: center;
+            padding: 20px;
+        }
 
-.sidebar h2{
-text-align:center;
-color:white;
-margin-bottom:30px;
-}
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+        }
 
-.sidebar a{
-display:block;
-padding:15px 25px;
-color:white;
-text-decoration:none;
-}
+        .sidebar a:hover {
+            background: #1b5e20;
+        }
 
-.sidebar a:hover{
-background:#1b5e20;
-}
+        /* Main Content */
+        .main {
+            margin-left: 250px;
+            width: 100%;
+            padding: 40px;
+        }
 
-/* Main */
+        h1 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
 
-.main{
-margin-left:250px;
-padding:30px;
-width:100%;
-}
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.1);
+            max-width: 600px;
+        }
 
-.main h1{
-color:#2e7d32;
-margin-bottom:20px;
-}
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
 
-.top-bar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:25px;
-}
+        .tip {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
 
-.add-btn{
-background:#2e7d32;
-color:white;
-padding:10px 18px;
-text-decoration:none;
-border-radius:8px;
-}
+        .date {
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
 
-.add-btn:hover{
-background:#1b5e20;
-}
-
-/* Farm Cards */
-
-.farm-container{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:20px;
-}
-
-.farm-card{
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.farm-card h3{
-color:#2e7d32;
-margin-bottom:10px;
-}
-
-.farm-card p{
-margin-bottom:8px;
-color:#555;
-}
-
-.status{
-display:inline-block;
-background:#d4edda;
-color:#155724;
-padding:5px 10px;
-border-radius:5px;
-font-size:14px;
-margin-top:10px;
-}
-
-</style>
 </head>
 
-<body ng-app="agriApp" ng-controller="FarmController">        
+<body ng-controller="FarmController">
 
-<div class="sidebar">
+    <!-- Sidebar -->
+    <div class="sidebar">
 
-<h2>🌱 AgriAssist AI</h2>
+        <h2>🌱 AgriAssist AI</h2>
 
-<a href="dashboard.html">🏠 Dashboard</a>
-<a href="profile.html">👤 My Profile</a>
-<a href="farms.html">🚜 My Farms</a>
-<a href="addfarm.html">➕ Add Farm</a>
-<a href="fertilizer.html">🌱 Fertilizer Calculator</a>
-<a href="disease.html">🌿 Disease Detection</a>
-<a href="pest.html">🐛 Pest Detection</a>
-<a href="login.html">🚪 Logout</a>
+        <a href="#">🏠 Dashboard</a>
+        <a href="#">👤 My Profile</a>
+        <a href="#">🚜 My Farms</a>
+        <a href="#">➕ Add Farm</a>
+        <a href="#">🌱 Fertilizer Calculator</a>
+        <a href="#">🌿 Disease Detection</a>
+        <a href="#">🐛 Pest Detection</a>
+        <a href="#">🚪 Logout</a>
 
-</div>
+    </div>
 
-<div class="main">
+    <!-- Main -->
+    <div class="main">
 
-<div class="top-bar">
-<h1>🚜 My Farms</h1>
+        <h1>🏠 Dashboard</h1>
 
-<a href="addfarm.html" class="add-btn">
-+ Add Farm
-</a>
-</div>
-<div class="farm-card" style="margin-bottom:25px;background:#e8f5e9;">
+        <div class="card">
 
-<h3>🌱 Today's Farming Tip</h3>
-<p><strong>Date:</strong> {{today | date:'dd/MM/yyyy'}}</p>
-<p>{{tips}}</p>              
-</div>
-<div class="farm-container">
+            <label><b>Enter Farmer Name</b></label>
 
-<div class="farm-card">
-<h3>Green Valley Farm</h3>
-<p><strong>Crop:</strong> Paddy</p>
-<p><strong>Area:</strong> 5 Acres</p>
-<p><strong>Location:</strong> Madurai</p>
-<span class="status">Active</span>
-</div>
+            <!-- Two-Way Data Binding -->
+            <input type="text"
+                   ng-model="farmerName"
+                   placeholder="Enter your name">
 
-<div class="farm-card">
-<h3>Sunrise Farm</h3>
-<p><strong>Crop:</strong> Sugarcane</p>
-<p><strong>Area:</strong> 3 Acres</p>
-<p><strong>Location:</strong> Dindigul</p>
-<span class="status">Active</span>
-</div>
+            <!-- Expression Binding -->
+            <h2>👋 Welcome, {{farmerName}}</h2>
 
-<div class="farm-card">
-<h3>Organic Farm</h3>
-<p><strong>Crop:</strong> Tomato</p>
-<p><strong>Area:</strong> 2 Acres</p>
-<p><strong>Location:</strong> Theni</p>
-<span class="status">Active</span>
-</div>
+            <div class="tip">
 
-</div>
+                <h3>🌱 Today's Farming Tip</h3>
 
-</div>
-<script>
+                <p>{{tips}}</p>
 
-var app = angular.module("agriApp", []);
+            </div>
 
-/* Value Dependency  */
-app.value("tips",[
-    "Water crops early in the morning.",
-    "Use organic fertilizers regularly.",
-    "Check soil moisture before irrigation.",
-    "Rotate crops every season.",
-    "Remove weeds regularly for healthy crop growth."
-]);
+            <div class="date">
 
+                <h3>📅 Today's Date</h3>
 
-/* Service Dependency */
-app.service("TipService", function(tips){
+                <p>{{today | date:'dd/MM/yyyy'}}</p>
 
-    this.getRandomTip = function(){
+            </div>
 
-        var index = Math.floor(Math.random() * tips.length);
+        </div>
 
-        return tips[index];
+    </div>
 
-    };
+    <script>
 
-});
+        var app = angular.module("agriApp", []);
 
+        /* Value Dependency */
+        app.value("tips", [
+            "Water crops early in the morning.",
+            "Use organic fertilizers regularly.",
+            "Check soil moisture before irrigation.",
+            "Rotate crops every season.",
+            "Remove weeds regularly for healthy crop growth."
+        ]);
 
-/* Controller */
-app.controller("FarmController",
-function($scope, TipService){
+        /* Service Dependency */
+        app.service("TipService", function (tips) {
 
-    // Farming Tip
-    $scope.tips = TipService.getRandomTip();
-    $scope.today = new Date();
+            this.getRandomTip = function () {
 
-});
+                var index = Math.floor(Math.random() * tips.length);
 
-</script>
+                return tips[index];
+
+            };
+
+        });
+
+        /* Controller */
+        app.controller("FarmController",
+            function ($scope, TipService) {
+
+                // Data Binding Variable
+                $scope.farmerName = "";
+
+                // Farming Tip
+                $scope.tips = TipService.getRandomTip();
+
+                // Current Date
+                $scope.today = new Date();
+
+            });
+
+    </script>
 
 </body>
+
 </html>
