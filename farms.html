@@ -304,7 +304,6 @@ margin-top:10px;
 <div class="farm-container">
 
 
-
 <div class="farm-card">
 
 <h3>Green Valley Farm</h3>
@@ -351,6 +350,7 @@ margin-top:10px;
 
 </div>
 
+<div id="newFarmContainer"></div>
 
 
 </div>
@@ -430,7 +430,23 @@ function($scope, TipService){
 
 });
 
+let farms = JSON.parse(localStorage.getItem("farms")) || [];
 
+let container = document.getElementById("newFarmContainer");
+
+farms.forEach(function(farm){
+
+    container.innerHTML += `
+        <div class="farm-card">
+            <h3>${farm.name}</h3>
+            <p><strong>Crop:</strong> ${farm.crop}</p>
+            <p><strong>Area:</strong> ${farm.area} Acres</p>
+            <p><strong>Location:</strong> ${farm.location}</p>
+            <span class="status">Active</span>
+        </div>
+    `;
+
+});
 
 </script>
 
