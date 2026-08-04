@@ -301,57 +301,39 @@ margin-top:10px;
 
 </div>
 
+<div class="farm-card" style="margin-bottom:25px;background:#fff8e1;">
+
+    <h3>📊 Farm Status</h3>
+
+    <p><strong>Active Farms:</strong> {{farmStatus.active}}</p>
+
+    <p><strong>Inactive Farms:</strong> {{farmStatus.inactive}}</p>
+
+</div>
+
 <div class="farm-container">
 
+    <div class="farm-card" ng-repeat="farm in farms">
 
-<div class="farm-card">
+        <h3>{{farm.name}}</h3>
 
-<h3>Green Valley Farm</h3>
+        <p><strong>Crop:</strong> {{farm.crop}}</p>
 
-<p><strong>Crop:</strong> Paddy</p>
+        <p><strong>Area:</strong> {{farm.area}} Acres</p>
 
-<p><strong>Area:</strong> 5 Acres</p>
+        <p><strong>Location:</strong> {{farm.location}}</p>
 
-<p><strong>Location:</strong> Madurai</p>
+        <span class="status">{{farm.status}}</span>
 
-<span class="status">Active</span>
+        <br><br>
 
-</div>
+        <button
+            ng-click="removeFarm($index)"
+            style="background:#d32f2f;color:white;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;">
+            Remove
+        </button>
 
-
-
-<div class="farm-card">
-
-<h3>Sunrise Farm</h3>
-
-<p><strong>Crop:</strong> Sugarcane</p>
-
-<p><strong>Area:</strong> 3 Acres</p>
-
-<p><strong>Location:</strong> Dindigul</p>
-
-<span class="status">Active</span>
-
-</div>
-
-
-
-<div class="farm-card">
-
-<h3>Organic Farm</h3>
-
-<p><strong>Crop:</strong> Tomato</p>
-
-<p><strong>Area:</strong> 2 Acres</p>
-
-<p><strong>Location:</strong> Theni</p>
-
-<span class="status">Active</span>
-
-</div>
-
-<div id="newFarmContainer"></div>
-
+    </div>
 
 </div>
 
@@ -361,96 +343,122 @@ margin-top:10px;
 
 <script>
 
-
-
 var app = angular.module("agriApp", []);
 
-
-
-/* Value Dependency 1 */
-
+/* Value Dependency */
 app.value("tips",[
-
     "Water crops early in the morning.",
-
     "Use organic fertilizers regularly.",
-
     "Check soil moisture before irrigation.",
-
     "Rotate crops every season.",
-
     "Remove weeds regularly for healthy crop growth."
-
 ]);
 
-
-
-
-
-/* Service Dependency 1 */
-
+/* Service */
 app.service("TipService", function(tips){
 
-
-
     this.getRandomTip = function(){
-
-
-
         var index = Math.floor(Math.random() * tips.length);
-
-
-
         return tips[index];
+    };
 
+    this.removeFarm = function(farms,index){
+        farms.splice(index,1);
+        localStorage.setItem("farms",
+            JSON.stringify(farms.filter(f=>!f.defaultFarm)));
+    };
 
+    this.countFarms = function(farms){
+
+        var active=0;
+        var inactive=0;
+
+        farms.forEach(function(farm){
+
+            if(farm.status=="Active")
+                active++;
+            else
+                inactive++;
+
+        });
+
+        return {
+            active:active,
+            inactive:inactive
+        };
 
     };
 
-
-
 });
-
-
-
-
 
 /* Controller */
 
-app.controller("FarmController",
+app.controller("FarmController",function($scope,TipService){
 
-function($scope, TipService){
+    $scope.today=new Date();
+    $scope.tips=TipService.getRandomTip();
 
+    // Default Farms
+    $scope.farms=[
 
+        {
+            name:"Green Valley Farm",
+            crop:"Paddy",
+            area:"5",
+            location:"Madurai",
+            status:"Active",
+            defaultFarm:true
+        },
 
-    // Farming Tip
+        {
+            name:"Sunrise Farm",
+            crop:"Sugarcane",
+            area:"3",
+            location:"Dindigul",
+            status:"Active",
+            defaultFarm:true
+        },
 
-    $scope.tips = TipService.getRandomTip();
-        $scope.today = new Date(); 
+        {
+            name:"Organic Farm",
+            crop:"Tomato",
+            area:"2",
+            location:"Theni",
+            status:"Active",
+            defaultFarm:true
+        }
 
-});
+    ];
 
-let farms = JSON.parse(localStorage.getItem("farms")) || [];
+    // Farms added from Add Farm page
+    var savedFarms=JSON.parse(localStorage.getItem("farms")) || [];
 
-let container = document.getElementById("newFarmContainer");
+    savedFarms.forEach(function(f){
+        f.defaultFarm=false;
+    });
 
-farms.forEach(function(farm){
+    $scope.farms=$scope.farms.concat(savedFarms);
 
-    container.innerHTML += `
-        <div class="farm-card">
-            <h3>${farm.name}</h3>
-            <p><strong>Crop:</strong> ${farm.crop}</p>
-            <p><strong>Area:</strong> ${farm.area} Acres</p>
-            <p><strong>Location:</strong> ${farm.location}</p>
-            <span class="status">Active</span>
-        </div>
-    `;
+    $scope.farmStatus=TipService.countFarms($scope.farms);
+
+    $scope.removeFarm=function(index){
+
+        $scope.farms.splice(index,1);
+
+        // Save only user-added farms
+        var customFarms=$scope.farms.filter(function(f){
+            return !f.defaultFarm;
+        });
+
+        localStorage.setItem("farms",JSON.stringify(customFarms));
+
+        $scope.farmStatus=TipService.countFarms($scope.farms);
+
+    };
 
 });
 
 </script>
-
-
 
 </body>
 
