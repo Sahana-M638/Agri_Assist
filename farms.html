@@ -294,32 +294,9 @@ margin-top:10px;
 
 <h3>🌱 Today's Farming Tip</h3>
 
-<div class="farm-card" style="margin-bottom:25px;">
-
-
-
-<h3>🚜 Farm Information</h3>
-
-
-
-<label>Farm Name</label><br>
-
-<input type="text"
-
-       ng-model="farmName"
-
-       style="width:100%;padding:10px;margin:10px 0;border:1px solid #ccc;border-radius:5px;">
-
-
-
-<p><strong>Farm Name:</strong> <span ng-bind="farmName"></span></p>
-
-
-
-</div>
 
 <p>{{tips}}</p>
-
+<p><strong>Date:</strong> {{today | date:'dd/MM/yyyy'}}</p>
 
 
 </div>
@@ -449,10 +426,7 @@ function($scope, TipService){
     // Farming Tip
 
     $scope.tips = TipService.getRandomTip();
-
-
-
-$scope.farmName = "Green Valley Farm";    
+        $scope.today = new Date(); 
 
 });
 
