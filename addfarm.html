@@ -179,13 +179,26 @@ Add Farm
 <script>
 
 document.getElementById("farmForm")
-.addEventListener("submit",function(e){
+.addEventListener("submit", function(e){
 
-e.preventDefault();
+    e.preventDefault();
 
-alert("✅ Farm Added Successfully!");
+    let farm = {
+        name: document.getElementById("farmName").value,
+        crop: document.getElementById("cropType").value,
+        area: document.getElementById("farmArea").value,
+        location: document.getElementById("location").value
+    };
 
-document.getElementById("farmForm").reset();
+    let farms = JSON.parse(localStorage.getItem("farms")) || [];
+
+    farms.push(farm);
+
+    localStorage.setItem("farms", JSON.stringify(farms));
+
+    alert("✅ Farm Added Successfully!");
+
+    document.getElementById("farmForm").reset();
 
 });
 
