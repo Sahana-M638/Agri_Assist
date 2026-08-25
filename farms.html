@@ -6,6 +6,8 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -209,6 +211,37 @@ color:#555;
 }
 
 
+/* Starting state */
+.farm-card.ng-enter {
+    opacity: 0;
+    transform: translateY(60px) scale(0.85);
+}
+
+/* Entering animation */
+.farm-card.ng-enter-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+
+/* Starting state before removal */
+.farm-card.ng-leave {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+/* Removing animation */
+.farm-card.ng-leave-active {
+    opacity: 0;
+    transform: translateX(150px) scale(0.7) rotate(5deg);
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+}
+
 
 .status{
 
@@ -305,32 +338,49 @@ margin-top:10px;
 
     <h3>📊 Farm Status</h3>
 
-    <p><strong>Active Farms:</strong> {{farmStatus.active}}</p>
+    <p><strong>🌱 Active Farms:</strong> {{farmStatus.active}}</p>
 
-    <p><strong>Inactive Farms:</strong> {{farmStatus.inactive}}</p>
+    <p><strong>⏸️ Inactive Farms:</strong> {{farmStatus.inactive}}</p>
 
 </div>
 
 <div class="farm-container">
 
-    <div class="farm-card" ng-repeat="farm in farms">
-
+    <div class="farm-card"
+     farm-card
+     ng-repeat="farm in farms track by $index">
         <h3>{{farm.name}}</h3>
 
-        <p><strong>Crop:</strong> {{farm.crop}}</p>
+        <p><strong>🌾 Crop:</strong> {{farm.crop}}</p>
 
-        <p><strong>Area:</strong> {{farm.area}} Acres</p>
+        <p><strong>📏 Area:</strong> {{farm.area}} Acres</p>
 
-        <p><strong>Location:</strong> {{farm.location}}</p>
+        <p><strong>📍 Location:</strong> {{farm.location}}</p>
 
-        <span class="status">{{farm.status}}</span>
+        <p>
+            <strong>Status:</strong>
 
-        <br><br>
+            <span class="status"
+                  ng-style="{
+                    'background': farm.status=='Active' ? '#d4edda' : '#f8d7da',
+                    'color': farm.status=='Active' ? '#155724' : '#721c24'
+                  }">
+
+                {{farm.status}}
+
+            </span>
+
+        </p>
+
+        <br>
 
         <button
+            ng-if="!farm.defaultFarm"
             ng-click="removeFarm($index)"
-            style="background:#d32f2f;color:white;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;">
-            Remove
+            style="background:#d32f2f;color:white;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;border-radius:6px;">
+
+            🗑 Remove
+
         </button>
 
     </div>
@@ -343,7 +393,52 @@ margin-top:10px;
 
 <script>
 
-var app = angular.module("agriApp", []);
+var app = angular.module("agriApp", ["ngAnimate"]);
+
+app.directive("farmCard", function(){
+
+    return {
+
+        restrict: "A",
+
+        link: function(scope, element){
+
+            /* Mouse Enter */
+
+            element.on("mouseenter", function(){
+
+                element.css({
+                    "transform": "translateY(-8px)",
+                    "box-shadow": "0 12px 25px rgba(0,0,0,0.18)"
+                });
+
+            });
+
+            /* Mouse Leave */
+
+            element.on("mouseleave", function(){
+
+                element.css({
+                    "transform": "translateY(0)",
+                    "box-shadow": "0 5px 15px rgba(0,0,0,0.1)"
+                });
+
+            });
+
+            /* Remove event listeners when element is destroyed */
+
+            scope.$on("$destroy", function(){
+
+                element.off("mouseenter");
+                element.off("mouseleave");
+
+            });
+
+        }
+
+    };
+
+});
 
 /* Value Dependency */
 app.value("tips",[
@@ -370,24 +465,27 @@ app.service("TipService", function(tips){
 
     this.countFarms = function(farms){
 
-        var active=0;
-        var inactive=0;
+    var active = 0;
+    var inactive = 0;
 
-        farms.forEach(function(farm){
+    farms.forEach(function(farm){
 
-            if(farm.status=="Active")
-                active++;
-            else
-                inactive++;
+        if(farm.status && farm.status.toLowerCase() === "active"){
+            active++;
+        }
 
-        });
+        if(farm.status && farm.status.toLowerCase() === "inactive"){
+            inactive++;
+        }
 
-        return {
-            active:active,
-            inactive:inactive
-        };
+    });
 
+    return {
+        active: active,
+        inactive: inactive
     };
+
+};
 
 });
 
