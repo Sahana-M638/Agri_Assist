@@ -136,67 +136,44 @@ font-size:18px;
 
 <div class="weather-card" ng-controller="weatherCtrl">
 
-<h2>Today's Weather</h2>
+    <h2>Today's Weather</h2>
 
-<div class="form-group">
+    <div class="form-group">
 
-<label>Enter Temperature (°C)</label>
+        <label>Enter Temperature (°C)</label>
 
-<input type="number"
-       ng-model="temperature"
-       ng-change="updateAdvice()">
+        <input type="number"
+               ng-model="temperature"
+               ng-change="updateAdvice()">
 
-</div>
+    </div>
 
-<div class="result">
-
-<p><strong>Temperature :</strong> {{temperature}} °C</p>
-
-<p><strong>Weather Advice :</strong> {{advice}}</p>
+    <weather-box></weather-box>
 
 </div>
-
-</div>
-
-</div>
-
 <script>
 
 var app = angular.module("agriApp", []);
 
-/*==========================
-      FACTORY
-==========================*/
+/* FACTORY */
 
 app.factory("weatherFactory", function(){
 
-    return{
+    return {
 
         getAdvice:function(temp){
 
-            if(temp >= 40){
+            if(temp >= 40)
+                return "🌞 Extremely Hot! Water crops twice a day.";
 
-                return "🌞 Extremely Hot! Water crops twice a day and avoid field work in the afternoon.";
-
-            }
-
-            else if(temp >= 30){
-
+            else if(temp >= 30)
                 return "☀ Sunny Weather. Good for harvesting and irrigation.";
 
-            }
-
-            else if(temp >= 20){
-
+            else if(temp >= 20)
                 return "🌤 Pleasant Weather. Best time for farming activities.";
 
-            }
-
-            else{
-
+            else
                 return "🌧 Cold Weather. Reduce irrigation and protect crops.";
-
-            }
 
         }
 
@@ -204,26 +181,40 @@ app.factory("weatherFactory", function(){
 
 });
 
-/*==========================
-      CONTROLLER
-==========================*/
+/* CUSTOM DIRECTIVE */
 
-app.controller("weatherCtrl",
+app.directive("weatherBox", function(){
 
-function($scope, weatherFactory){
+    return {
 
-$scope.temperature = 30;
+        restrict: "E",
 
-$scope.updateAdvice = function(){
+        template:
+            '<div class="result">' +
+            '<p><strong>Temperature:</strong> {{temperature}} °C</p>' +
+            '<p><strong>Weather Advice:</strong> {{advice}}</p>' +
+            '</div>'
 
-$scope.advice = weatherFactory.getAdvice($scope.temperature);
-
-};
-
-$scope.updateAdvice();
+    };
 
 });
 
+/* CONTROLLER */
+
+app.controller("weatherCtrl", function($scope, weatherFactory){
+
+    $scope.temperature = 30;
+
+    $scope.updateAdvice = function(){
+
+        $scope.advice =
+            weatherFactory.getAdvice($scope.temperature);
+
+    };
+
+    $scope.updateAdvice();
+
+});
 </script>
 
 </body>
