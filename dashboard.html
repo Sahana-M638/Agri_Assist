@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Farmer Dashboard</title>
 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+
 <style>
 
 *{
@@ -78,10 +81,53 @@ color:#2e7d32;
 margin-bottom:10px;
 }
 
+/* Dashboard entrance animation */
+
+.animated-card {
+    animation: cardAppear 1.2s ease-out forwards;
+    opacity: 0;
+}
+
+/* Each card appears after a small delay */
+
+.animated-card:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.animated-card:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.animated-card:nth-child(3) {
+    animation-delay: 0.8s;
+}
+
+.animated-card:nth-child(4) {
+    animation-delay: 1.1s;
+}
+
+@keyframes cardAppear {
+
+    0% {
+        opacity: 0;
+        transform: translateY(80px) scale(0.7);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(-10px) scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
 </style>
 </head>
 
-<body>
+<body ng-app="agriApp">
 
 <div class="sidebar">
 
@@ -103,32 +149,48 @@ margin-bottom:10px;
 <div class="main">
 
 <h1>Welcome Farmer 👋</h1>
+<div class="cards" ng-controller="DashboardController">
 
-<div class="cards">
+    <div class="card animated-card" ng-repeat="card in cards">
 
-<div class="card">
-<h3>Total Farms</h3>
-<p>3 Registered Farms</p>
-</div>
+        <h3>{{card.title}}</h3>
 
-<div class="card">
-<h3>Disease Reports</h3>
-<p>2 Pending Analyses</p>
-</div>
+        <p>{{card.description}}</p>
 
-<div class="card">
-<h3>Weather</h3>
-<p>Sunny • 30°C</p>
-</div>
-
-<div class="card">
-<h3>AI Assistant</h3>
-<p>Ready to Answer Questions</p>
-</div>
+    </div>
 
 </div>
 
 </div>
+
+<script>
+
+var app = angular.module("agriApp", ["ngAnimate"]);
+
+app.controller("DashboardController", function($scope) {
+
+    $scope.cards = [
+        {
+            title: "Total Farms",
+            description: "3 Registered Farms"
+        },
+        {
+            title: "Disease Reports",
+            description: "2 Pending Analyses"
+        },
+        {
+            title: "Weather",
+            description: "Sunny • 30°C"
+        },
+        {
+            title: "AI Assistant",
+            description: "Ready to Answer Questions"
+        }
+    ];
+
+});
+
+</script>
 
 </body>
 </html>
